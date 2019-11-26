@@ -3,7 +3,7 @@ import Vue from 'vue'
 import axios from 'axios'
 Vue.use(axios)
 
-// let root = `${window.location.origin}`;
+//默认请求地址
 let root = `http://rap2api.taobao.org/app/mock/222209`
 
 // axios 配置

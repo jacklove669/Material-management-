@@ -68,7 +68,7 @@
                         type="text" size="small">{{scope.row.isPublished ? '下架' :'上架'}}</el-button>
                     <el-button style="color:#F18D00" @click.native.prevent="ctrl(scope.$index,scope.row,'edit')"
                         type="text" size="small">编辑</el-button>
-                    <el-button style="color:#F18D00"  type="text" size="small">复制</el-button>
+                    <el-button style="color:#F18D00"  type="text" size="small" @click="cope(scope.row,scope.$index)">复制</el-button>
                     <el-button style="color:#F18D00" @click.native.prevent="ctrl(scope.$index,scope.row, 'delete')"
                         type="text" size="small">删除</el-button>
                 </template>
@@ -78,7 +78,9 @@
             <el-pagination small layout="prev, pager, next" :total="50">
             </el-pagination>
         </div>
-
+        <!-- 双向绑定值。初始情况下通过该值控制 dialog显示。
+        dialog关闭的时候，element自动设置该值为false
+        这是vue的语法 -->
         <el-dialog title="查看" :visible.sync="detailDialogVisible">
             <el-form label-width="100px" class="text-left" size="mini">
                 <el-card class="box-card" shadow="never">
@@ -517,9 +519,9 @@
                     applicationClass: '钢板', // 应用类
                     materialName: '轧路板', // 物料名
                     endDate: '2018-09-09', // 截止日期
-                    selectVal1: '1', // 大类
-                    selectVal2: '101', // 子类
-                    selectVal3: '10101', // 小类
+                    selectVal1: '钢板', // 大类
+                    selectVal2: '冷轧钢板', // 子类
+                    selectVal3: '型材Xdfdstovuv Vmu', // 小类
 
                     originAddress: 'GD', // 产地 *
                     numberPlate: 'QS1000001', // 牌号 *
@@ -801,6 +803,11 @@
                 }
                 });
             },
+               cope(val, index) {
+                 this.tableData.splice(index, 0,JSON.parse(JSON.stringify(val)))
+                //  this.$router.push('Release')
+   			},  
+               
             closeDialog(){
                 let vm = this
                 vm.detailDialogVisible = false
@@ -832,6 +839,11 @@
                         vm.editDialogVisible = true
                         vm.editDataIdx = idx
                         break;
+                    // case 'copy':
+                    //      this.$router.push('Release')
+                    //     //  vm.formData = JSON.parse(JSON.stringify(row))
+                      
+                    //     break;
                     case 'delete':
                         vm.$confirm('是否删除该物料?', '友情提示', {
                             confirmButtonText: '确定',
